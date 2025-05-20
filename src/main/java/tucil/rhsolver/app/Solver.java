@@ -110,31 +110,25 @@ public class Solver {
     }
 
         public Board IDAStar(Board parentBoard, String heuristicType) {
-        // Initial threshold is just the heuristic value of the start state
         int threshold = parentBoard.getHeuristicByType(heuristicType);
 
         while (true) {
-            // Reset for each new threshold iteration
             visitedStates.clear();
-            visited = 0;
 
             Stack<Board> stack = new Stack<>();
             stack.push(parentBoard);
 
-            // Track minimum f-value that exceeds threshold
             int nextThreshold = Integer.MAX_VALUE;
 
             while (!stack.isEmpty()) {
                 Board currentBoard = stack.pop();
 
-                // Check for goal state
                 if (currentBoard.isGoalState()) {
                     System.out.println("Visited: " + visited);
                     System.out.println("Heuristic: " + heuristicType);
                     return currentBoard;
                 }
 
-                // Process current board
                 String currentKey = currentBoard.getStateKey();
                 if (visitedStates.containsKey(currentKey)) {
                     Board storedIteration = visitedStates.get(currentKey);
@@ -143,41 +137,32 @@ public class Solver {
                     }
                 }
 
-                // Mark as visited
                 visited++;
                 addVisited(currentBoard);
 
-                // Get all possible next boards
                 List<Board> successors = new ArrayList<>(currentBoard.generatePossibleBoards());
 
-                // Process in reverse order (to maintain DFS order when using stack)
                 Collections.reverse(successors);
 
                 for (Board next : successors) {
-                    // Calculate f-value: g + h
-                    int g = next.getIteration(); // Path cost so far
-                    int h = next.getHeuristicByType(heuristicType); // Heuristic estimate
-                    int f = g + h; // Total estimated cost
+                    int g = next.getIteration();
+                    int h = next.getHeuristicByType(heuristicType);
+                    int f = g + h;
 
-                    // Set the heuristic cost for board (f-value)
                     next.setHeuristicCost(f);
 
                     if (f <= threshold) {
-                        // If within threshold, add to stack for exploration
                         stack.push(next);
                     } else {
-                        // If exceeds threshold, track for next iteration
                         nextThreshold = Math.min(nextThreshold, f);
                     }
                 }
             }
 
-            // If no solution found within threshold and no higher f-values found
             if (nextThreshold == Integer.MAX_VALUE) {
-                return null; // No solution exists
+                return null;
             }
 
-            // Update threshold for next iteration
             threshold = nextThreshold;
         }
     }
