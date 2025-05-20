@@ -109,54 +109,76 @@ public class Solver {
         return path;
     }
 
-    public Board IDAStar(Board parentBoard, String heuristicType) {
+        public Board IDAStar(Board parentBoard, String heuristicType) {
+        // Initial threshold is just the heuristic value of the start state
         int threshold = parentBoard.getHeuristicByType(heuristicType);
-        int tempThreshold = 0;
-        parentBoard.setHeuristicCost(threshold);
-        Stack<Board> stack = new Stack<>();
-        stack.push(parentBoard);
 
         while (true) {
+            // Reset for each new threshold iteration
+            visitedStates.clear();
+            visited = 0;
+
+            Stack<Board> stack = new Stack<>();
+            stack.push(parentBoard);
+
+            // Track minimum f-value that exceeds threshold
+            int nextThreshold = Integer.MAX_VALUE;
+
             while (!stack.isEmpty()) {
-                tempThreshold = Integer.MAX_VALUE;
                 Board currentBoard = stack.pop();
-                currentBoard.printBoard();
+
+                // Check for goal state
                 if (currentBoard.isGoalState()) {
-                    addVisited(currentBoard);
                     System.out.println("Visited: " + visited);
                     System.out.println("Heuristic: " + heuristicType);
                     return currentBoard;
                 }
 
+                // Process current board
                 String currentKey = currentBoard.getStateKey();
-                if (this.visitedStates.containsKey(currentKey)) {
-                    continue;
+                if (visitedStates.containsKey(currentKey)) {
+                    Board storedIteration = visitedStates.get(currentKey);
+                    if (storedIteration.getIteration() <= currentBoard.getIteration()) {
+                        continue;
+                    }
                 }
+
+                // Mark as visited
                 visited++;
                 addVisited(currentBoard);
 
-                for (Board next : currentBoard.generatePossibleBoards()) {
-                    String key = next.getStateKey();
-                    if (!this.visitedStates.containsKey(key)) {
-                        int h = next.getHeuristicByType(heuristicType);
-                        int f = h + next.getIteration();
-                        next.setHeuristicCost(f);
+                // Get all possible next boards
+                List<Board> successors = new ArrayList<>(currentBoard.generatePossibleBoards());
 
-                        if (f > threshold) {
-                            tempThreshold = Math.min(tempThreshold, f);
-                            continue;
-                        }
+                // Process in reverse order (to maintain DFS order when using stack)
+                Collections.reverse(successors);
 
+                for (Board next : successors) {
+                    // Calculate f-value: g + h
+                    int g = next.getIteration(); // Path cost so far
+                    int h = next.getHeuristicByType(heuristicType); // Heuristic estimate
+                    int f = g + h; // Total estimated cost
+
+                    // Set the heuristic cost for board (f-value)
+                    next.setHeuristicCost(f);
+
+                    if (f <= threshold) {
+                        // If within threshold, add to stack for exploration
                         stack.push(next);
+                    } else {
+                        // If exceeds threshold, track for next iteration
+                        nextThreshold = Math.min(nextThreshold, f);
                     }
                 }
             }
-            if (tempThreshold == Integer.MAX_VALUE) {
-                return null;
+
+            // If no solution found within threshold and no higher f-values found
+            if (nextThreshold == Integer.MAX_VALUE) {
+                return null; // No solution exists
             }
-            threshold = tempThreshold;
-            stack.push(parentBoard);
-            visitedStates.clear();
+
+            // Update threshold for next iteration
+            threshold = nextThreshold;
         }
     }
 }
