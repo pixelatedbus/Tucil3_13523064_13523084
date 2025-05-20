@@ -345,7 +345,7 @@ public class Board {
         return getPiecesBlockingPiece(piece);
     }
 
-    public int heuristicByBlockCountAndDistance(){
+    public int heuristicByBlockCount(){
         List<Piece> blockingPieces = getAllBlocking();
         int count = 0;
         for (Piece piece : blockingPieces){
@@ -353,13 +353,15 @@ public class Board {
                 count++;
             }
         }
-        Coords playerFirst = new Coords(getPlayer().getPosition().getFirst());
-        return count + (int) playerFirst.distanceTo(goal);
+        int goal = 1;
+        if (getPlayer().isIntersecting(this.goal)){
+            goal = 0;
+        }
+        return count + goal;
     }
 
     public int heuristicByRecursiveBlock(){
-        // for each blocking piece, see if it can move, if it cant, what is the blocking piece that blocks it
-        List<Piece> initialBlocking = getAllBlocking(); // find pieces that block the player
+        List<Piece> initialBlocking = getAllBlocking();
         Set<Piece> visitedPieces = new HashSet<>();
         Stack<Piece> blockingPieces = new Stack<>();
         for (Piece piece : initialBlocking){
@@ -383,13 +385,14 @@ public class Board {
                 }
             }
         }
-        Coords player = getPlayer().getPosition().getFirst();
-        Coords goal = getGoal();
-        return 10*count + (int) player.distanceTo(goal);
+        int goal = 1;
+        if (getPlayer().isIntersecting(this.goal)){
+            goal = 0;
+        }
+        return count + goal;
     }
 
     public int maxDepth(Piece piece, Set<Piece> visited){
-        // find the max depth of the blocking pieces
         if (visited.contains(piece)){
             return 0;
         }
@@ -405,21 +408,24 @@ public class Board {
     }
 
     public int heuristicByMaxDepth(){
-        List<Piece> initialBlocking = getAllBlocking(); // find pieces that block the player
+        List<Piece> initialBlocking = getAllBlocking();
         Set<Piece> visitedPieces = new HashSet<>();
         int maxDepth = 0;
         for (Piece piece : initialBlocking){
             if (piece.getId() != 'P'){
-                System.out.println("Blocking Piece: " + piece.getId());
                 maxDepth = Math.max(maxDepth, maxDepth(piece, visitedPieces));
             }
         }
-        return 10*maxDepth + (int) getPlayer().getPosition().getFirst().distanceTo(goal);
+        int goal = 1;
+        if (getPlayer().isIntersecting(this.goal)){
+            goal = 0;
+        }
+        return maxDepth + goal;
     }
 
     public int getHeuristicByType(String type){
-        if (type.equals("BlockCountDistance")){
-            return heuristicByBlockCountAndDistance();
+        if (type.equals("BlockCount")){
+            return heuristicByBlockCount();
         } else if (type.equals("Recursive")){
             return heuristicByRecursiveBlock();
         } else if (type.equals("Max Depth")){

@@ -322,12 +322,12 @@ public class Main extends Application {
         bottomSection.setStyle("-fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 5;");
 
         ComboBox<String> algoSelector = new ComboBox<>();
-        algoSelector.getItems().addAll("GBFS", "UCS", "A*", "IDA*");
+        algoSelector.getItems().addAll("GBFS", "UCS", "A*", "IDA*", "SA");
         algoSelector.setValue("GBFS");
         algoSelector.setStyle("-fx-font-size: 12;");
 
         ComboBox<String> heuristicSelector = new ComboBox<>();
-        heuristicSelector.getItems().addAll( "Recursive", "Max Depth", "BlockCountDistance");
+        heuristicSelector.getItems().addAll( "Recursive", "Max Depth", "BlockCount");
         heuristicSelector.setValue("Recursive");
         heuristicSelector.setStyle("-fx-font-size: 12;");
 

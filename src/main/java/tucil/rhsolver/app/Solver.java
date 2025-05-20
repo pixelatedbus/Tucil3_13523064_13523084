@@ -111,30 +111,25 @@ public class Solver {
 
     public Board IDAStar(Board parentBoard, String heuristicType) {
         int threshold = parentBoard.getHeuristicByType(heuristicType);
+        int tempThreshold = 0;
         parentBoard.setHeuristicCost(threshold);
+        Stack<Board> stack = new Stack<>();
+        stack.push(parentBoard);
 
         while (true) {
-            int minHeuristic = Integer.MAX_VALUE;
-            this.queue.clear();
-            this.visitedStates.clear();
-
-            parentBoard.setHeuristicCost(threshold);
-            addQueue(parentBoard);
-
-            while (!queue.isEmpty()) {
-                Board currentBoard = this.queue.poll();
-
+            while (!stack.isEmpty()) {
+                tempThreshold = Integer.MAX_VALUE;
+                Board currentBoard = stack.pop();
+                currentBoard.printBoard();
                 if (currentBoard.isGoalState()) {
+                    addVisited(currentBoard);
+                    System.out.println("Visited: " + visited);
+                    System.out.println("Heuristic: " + heuristicType);
                     return currentBoard;
                 }
 
                 String currentKey = currentBoard.getStateKey();
-                if (currentBoard.getHeuristicCost() > threshold) {
-                    minHeuristic = Math.min(minHeuristic, currentBoard.getHeuristicCost());
-                    continue;
-                }
-
-                if (this.visitedStates.containsKey(currentKey) && this.visitedStates.get(currentKey).getHeuristicCost() <= currentBoard.getHeuristicCost()) {
+                if (this.visitedStates.containsKey(currentKey)) {
                     continue;
                 }
                 visited++;
@@ -145,25 +140,23 @@ public class Solver {
                     if (!this.visitedStates.containsKey(key)) {
                         int h = next.getHeuristicByType(heuristicType);
                         int f = h + next.getIteration();
-
                         next.setHeuristicCost(f);
+
                         if (f > threshold) {
-                            minHeuristic = Math.min(minHeuristic, f);
+                            tempThreshold = Math.min(tempThreshold, f);
                             continue;
                         }
 
-                        addQueue(next);
+                        stack.push(next);
                     }
                 }
             }
-
-            if (minHeuristic == Integer.MAX_VALUE) {
-                return null;  // No solution found
+            if (tempThreshold == Integer.MAX_VALUE) {
+                return null;
             }
-
-            threshold = minHeuristic;
-            System.out.println("New threshold: " + threshold);
+            threshold = tempThreshold;
+            stack.push(parentBoard);
+            visitedStates.clear();
         }
     }
-
 }
