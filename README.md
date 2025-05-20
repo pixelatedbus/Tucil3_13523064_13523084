@@ -32,7 +32,7 @@ javac --module-path "PATH\TO\javafx-sdk\lib" --add-modules javafx.controls,javaf
 Setelah build selesai, jalankan executable melalui terminal/command prompt dari direktori utama dengan format:
 
 ```bash
-java -jar .\bin\rush-hour-puzzle-solver-jar-with-dependencies.jar
+java -jar .\rush-hour-puzzle-solver-jar-with-dependencies.jar
 ```
 
 Jika tidak melakukan kompilasi dengan Maven, jalankan skrip berikut untuk memulai program.
