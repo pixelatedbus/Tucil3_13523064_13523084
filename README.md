@@ -41,7 +41,7 @@ java --module-path "PATH\TO\javafx-sdk\lib" --add-modules javafx.controls,javafx
 
 ```
 
-Setelah program berhasil berjalan, pengguna dapat memasukkan input board dalam bentuk .txt ataupun secara manual melalui GUI yang tersedia.
+Setelah program berhasil berjalan, pengguna dapat memasukkan input board dalam bentuk .txt ataupun secara manual melalui GUI yang tersedia. Pada Manual Board Editor, balok merah dengan outline hitam menandakan Player block.
 
 Jika mengalami kesulitan dalam proses build atau tidak memenuhi requirement, pengguna dapat langsung menggunakan aplikasi yang dibarengi rilis kami.
 
