@@ -475,6 +475,17 @@ public class Board {
         }
     }
 
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < row; i++){
+            for (int j = 0; j < col; j++){
+                sb.append(matrix[i][j]);
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
 
 //    public int getDependencyDepth(){
 //        list<Piece> blockingPieces = getAllBlocking();

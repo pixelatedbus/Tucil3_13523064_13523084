@@ -44,9 +44,11 @@ public class Solver {
 
         while (!queue.isEmpty()){
             Board currentBoard = this.queue.poll();
-            currentBoard.printBoard();
             if(currentBoard.isGoalState()){
                 addVisited(currentBoard);
+                for (Board b : getResultInOrder(currentBoard)){
+                    System.out.println(b);
+                }
                 System.out.println("Visited: " + visited);
                 System.out.println("Heuristic: " + heuristicType);
                 return currentBoard;
@@ -69,7 +71,6 @@ public class Solver {
                         childHeuristic = next.getHeuristicByType(heuristicType);
                     } else if(algorithm.equals("UCS")){
                         childHeuristic = next.getIteration();
-                        System.out.println(childHeuristic);
                     } else {
                         childHeuristic = next.getHeuristicByType(heuristicType) + next.getIteration();
                     }
@@ -124,6 +125,10 @@ public class Solver {
                 Board currentBoard = stack.pop();
 
                 if (currentBoard.isGoalState()) {
+                    List<Board> s = getResultInOrder(currentBoard);
+                    for (Board b : s) {
+                        System.out.println(b);
+                    }
                     System.out.println("Visited: " + visited);
                     System.out.println("Heuristic: " + heuristicType);
                     return currentBoard;
