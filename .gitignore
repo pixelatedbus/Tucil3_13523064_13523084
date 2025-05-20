@@ -27,4 +27,4 @@ replay_pid*
 /.idea/
 
 # Maven
-/target/
+/bin/
