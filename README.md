@@ -41,8 +41,7 @@ java --module-path "PATH\TO\javafx-sdk\lib" --add-modules javafx.controls,javafx
 
 ```
 
-Setelah program berhasil berjalan, pengguna dapat memasukkan input board dalam bentuk .txt ataupun secara manual melalui GUI yang tersedia. Ketika merasa sudah
-lengkap, pencarian dapat ditentukan algoritma pencarian dan heuristiknya, kemudian klik tombol "Solve" untuk memulai pencarian solusi. Setelah pencarian selesai, pengguna dapat melihat langkah-langkah yang diambil untuk mencapai solusi.
+Setelah program berhasil berjalan, pengguna dapat memasukkan input board dalam bentuk .txt ataupun secara manual melalui GUI yang tersedia.
 
 Jika mengalami kesulitan dalam proses build atau tidak memenuhi requirement, pengguna dapat langsung menggunakan aplikasi yang dibarengi rilis kami.
 
@@ -50,5 +49,14 @@ Jika mengalami kesulitan dalam proses build atau tidak memenuhi requirement, pen
 Program ini dibuat oleh:
 - Samuel Gerrard Hamonangan Girsang 13523064
 - Lutfi Hakim Yusra 13523084
+
+## Credits
+Repository ini memanfaatkan template repo berikut:
+- [javafx-jar-template](https://github.com/FDelporte/javafx-jar-template)
+
+Repository ini juga merupakan hasil perpindahan repositori ini ke dalam template:
+- [Tucil3_1352306_13523084-deprecated](https://github.com/pixelatedbus/Tucil3_13523064_13523084-deprecated)
+
+
 
 
