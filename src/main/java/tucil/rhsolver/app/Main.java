@@ -347,8 +347,8 @@ public class Main extends Application {
             heuristicStatus.setText("Heuristic: " + heuristicSelector.getValue());
 
             String selectedHeuristic = heuristicSelector.getValue();
-            if (selectedHeuristic.equals("BlockCountDistance")) {
-                heuristicStatus.setText("Heuristic: BlockCountDistance");
+            if (selectedHeuristic.equals("BlockCount")) {
+                heuristicStatus.setText("Heuristic: BlockCount");
             } else if (selectedHeuristic.equals("Recursive")) {
                 heuristicStatus.setText("Heuristic: Recursive");
             } else {
